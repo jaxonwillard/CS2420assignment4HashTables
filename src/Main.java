@@ -7,12 +7,13 @@ public class Main{
     // Simple main
     public static void main (String [ ] args ) throws FileNotFoundException, IOException
     {
-        QuadraticProbingHashTable<WordInfo> H = new QuadraticProbingHashTable<>( );
-        WordInfo wordInfo = new WordInfo("Hello");
-        H.insert(wordInfo.getWord(), wordInfo);
-        System.out.println(H.toString(90));
-        System.out.println(H.size());
+        Reviews reviews = new Reviews();
+        reviews.readReviews("movieReview");
 
+
+//        QuadraticProbingHashTable<WordInfo> H = new QuadraticProbingHashTable<>( );
+//
+//
 //        BufferedReader in = new BufferedReader(new FileReader("movieReview.txt"));
 //
 //        String line;

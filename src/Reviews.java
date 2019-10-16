@@ -1,5 +1,6 @@
 
 import java.io.*;
+import java.util.Arrays;
 
 public class Reviews {
 
@@ -37,12 +38,21 @@ public class Reviews {
                     throw new NumberFormatException("Expected integer at line " + line_count + " in file " + filename);
                 }
                 ReviewInfo r = new ReviewInfo(score, words);
+
+                for (String word : Arrays.copyOfRange(words,1, words.length)){
+                    if (!H.contains())
+                }
+
                 System.out.println(r.toString());
             }
             System.out.println("Number of Reviews " +  line_count);
 
         }
-        private static class ReviewInfo {
+
+    /**
+     *
+     */
+    private static class ReviewInfo {
             int score;
             String[] words;
 
@@ -61,25 +71,35 @@ public class Reviews {
             }
         }
 
+    /**
+     * Holds and updates totalScore and numberofOccurences
+     */
     private static class WordInfo {
-        int totalScore;
-        int numberOfOccurences;
-        String word;
+            int totalScore;
+            int numberOfOccurences;
+            String word;
 
-        // Constructors
-        WordInfo(String word) {
-            this.word = word;
-            totalScore=0;
-            numberOfOccurences = 0;
-        }
+            // Constructors
+            WordInfo(String word) {
+                this.word = word;
+                totalScore=0;
+                numberOfOccurences = 0;
+            }
 
-        public void update(int score){
-            this.totalScore+=score;
-            this.numberOfOccurences++;
-        }
+            public void update(int score){
+                this.totalScore+=score;
+                this.numberOfOccurences++;
+            }
 
         public String toString() {
            return "Word " + word + " [" + totalScore +", " + numberOfOccurences+"]";
+        }
+
+        public int getNumberOfOccurences() {
+            return numberOfOccurences;
+        }
+        public int getTotalScore(){
+                return totalScore / numberOfOccurences;
         }
     }
 
@@ -88,7 +108,7 @@ public class Reviews {
 
             try {
                 Reviews r1 = new Reviews();
-                r1.readReviews("movieReviews.txt");
+                r1.readReviews("movieReview.txt");
                 System.out.println(r1);
 
 
