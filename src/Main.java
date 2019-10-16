@@ -19,6 +19,8 @@ public class Main {
             String[] wordsInLine = line.split(" ");
             for (String word : wordsInLine){
                 WordInfo wordInfo = new WordInfo(word);
+                Integer eight = 8;
+                if (!H.contains(wordInfo.getWord())){ }
             }
         }
         System.out.println(H.size());

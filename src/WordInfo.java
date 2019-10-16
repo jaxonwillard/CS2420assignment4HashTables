@@ -1,7 +1,7 @@
 public class WordInfo {
-    String word;
-    int totalScore;
-    int numberOccurrences;
+    private String word;
+    private int totalScore;
+    private int numberOccurrences;
 
     public WordInfo(String word){
         this.word = word;
@@ -10,6 +10,10 @@ public class WordInfo {
     private void calculateTotalScore(){
         this.totalScore = 0;
 
+    }
+
+    public String getWord(){
+        return this.word;
     }
 
 

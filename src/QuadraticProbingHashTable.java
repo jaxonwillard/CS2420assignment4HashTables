@@ -42,7 +42,7 @@ public class QuadraticProbingHashTable<AnyType>
      * already present, do nothing.
      * @param x the item to insert.
      */
-    public boolean insert( AnyType x )
+    public boolean insert( AnyType x, WordInfo wordInfo )
     {
         // Insert x as active
         int currentPos = findPos( x );
