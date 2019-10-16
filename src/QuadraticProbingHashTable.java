@@ -10,6 +10,8 @@
 // void makeEmpty( )      --> Remove all items
 
 
+import java.util.Queue;
+
 /**
  * Probing table implementation of hash tables.
  * Note that all "matching" is based on the equals method.
@@ -47,7 +49,7 @@ public class QuadraticProbingHashTable<AnyType>
         if( isActive( currentPos ) )
             return false;
 
-        array[ currentPos ] = new HashEntry<>( x, true );
+        array[ currentPos ] = new HashEntry<>( x, currentPos, true );
         theSize++;
 
         // Rehash; see Section 5.5
@@ -158,12 +160,12 @@ public class QuadraticProbingHashTable<AnyType>
 
     /**
      * Find an item in the hash table.
-     * @param x the item to search for.
+     * @param element the item to search for.
      * @return the matching item.
      */
-    public AnyType find( AnyType x )
+    public AnyType find( AnyType element )
     {
-        int currentPos = findPos( x );
+        int currentPos = findPos( element );
         if (!isActive( currentPos )) {
             return null;
         }
@@ -173,7 +175,7 @@ public class QuadraticProbingHashTable<AnyType>
     }
 
     /**
-     * Return true if currentPos exists and is active.
+     * Return true if currentPos exists and active.
      * @param currentPos the result of a call to findPos.
      * @return true if currentPos is active.
      */
@@ -210,19 +212,27 @@ public class QuadraticProbingHashTable<AnyType>
 
     private static class HashEntry<AnyType>
     {
-        public AnyType  element;   // the element
-        public boolean isActive;  // false if marked deleted
+        public Integer key;         //
+        public AnyType element;     // the element
+        public boolean isActive;    // false if marked deleted
 
-        public HashEntry( AnyType e )
-        {
-            this( e, true );
-        }
 
-        public HashEntry( AnyType e, boolean i )
+//        public HashEntry( AnyType e )
+//        {
+//            this( e, true );
+//        }
+
+        public HashEntry( AnyType e, Integer k, boolean i )
         {
             element  = e;
             isActive = i;
+            key      = k;
         }
+
+        public Integer getKey(){return this.key;}
+
+
+
     }
 
     private static final int DEFAULT_TABLE_SIZE = 101;
@@ -278,43 +288,5 @@ public class QuadraticProbingHashTable<AnyType>
     }
 
 
-    // Simple main
-    public static void main( String [ ] args )
-    {
-        QuadraticProbingHashTable<String> H = new QuadraticProbingHashTable<>( );
-
-
-        long startTime = System.currentTimeMillis( );
-
-        final int NUMS = 2000000;
-        final int GAP  =   37;
-
-        System.out.println( "Checking... (no more output means success)" );
-
-
-        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
-            H.insert( ""+i );
-        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
-            if( H.insert( ""+i ) )
-                System.out.println( "OOPS!!! " + i );
-        for( int i = 1; i < NUMS; i+= 2 )
-            H.remove( ""+i );
-
-        for( int i = 2; i < NUMS; i+=2 )
-            if( !H.contains( ""+i ) )
-                System.out.println( "Find fails " + i );
-
-        for( int i = 1; i < NUMS; i+=2 )
-        {
-            if( H.contains( ""+i ) )
-                System.out.println( "OOPS!!! " +  i  );
-        }
-
-        long endTime = System.currentTimeMillis( );
-
-        System.out.println( "Elapsed time: " + (endTime - startTime) );
-        System.out.println( "H size is: " + H.size( ) );
-        System.out.println( "Array size is: " + H.capacity( ) );
-    }
 
 }
