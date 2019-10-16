@@ -1,4 +1,5 @@
-public class WordInfo {
+public class WordInfo implements Comparable<WordInfo> {
+
     private String word;
     private int totalScore;
     private int numberOccurrences;
@@ -14,6 +15,11 @@ public class WordInfo {
 
     public String getWord(){
         return this.word;
+    }
+
+    @Override
+    public int compareTo(WordInfo word2){
+        return this.word.compareTo(word2.word);
     }
 
 

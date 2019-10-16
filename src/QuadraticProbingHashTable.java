@@ -10,8 +10,6 @@
 // void makeEmpty( )      --> Remove all items
 
 
-import java.util.Queue;
-
 /**
  * Probing table implementation of hash tables.
  * Note that all "matching" is based on the equals method.
@@ -40,16 +38,16 @@ public class QuadraticProbingHashTable<AnyType>
     /**
      * Insert into the hash table. If the item is
      * already present, do nothing.
-     * @param x the item to insert.
+     * @param wordInfo the item to insert.
      */
-    public boolean insert( AnyType x, WordInfo wordInfo )
+    public boolean insert(String word, AnyType wordInfo )
     {
         // Insert x as active
-        int currentPos = findPos( x );
+        int currentPos = findPos( wordInfo );
         if( isActive( currentPos ) )
             return false;
 
-        array[ currentPos ] = new HashEntry<>( x, currentPos, true );
+        array[ currentPos ] = new HashEntry<>(word, wordInfo, true );
         theSize++;
 
         // Rehash; see Section 5.5
@@ -86,7 +84,7 @@ public class QuadraticProbingHashTable<AnyType>
         // Copy table over
         for( HashEntry<AnyType> entry : oldArray )
             if( entry != null && entry.isActive )
-                insert( entry.element );
+                insert(entry.key, entry.element );
     }
 
     /**
@@ -160,12 +158,12 @@ public class QuadraticProbingHashTable<AnyType>
 
     /**
      * Find an item in the hash table.
-     * @param element the item to search for.
+     * @param x the item to search for.
      * @return the matching item.
      */
-    public AnyType find( AnyType element )
+    public AnyType find( AnyType x )
     {
-        int currentPos = findPos( element );
+        int currentPos = findPos( x );
         if (!isActive( currentPos )) {
             return null;
         }
@@ -175,7 +173,7 @@ public class QuadraticProbingHashTable<AnyType>
     }
 
     /**
-     * Return true if currentPos exists and active.
+     * Return true if currentPos exists and is active.
      * @param currentPos the result of a call to findPos.
      * @return true if currentPos is active.
      */
@@ -212,27 +210,21 @@ public class QuadraticProbingHashTable<AnyType>
 
     private static class HashEntry<AnyType>
     {
-        public Integer key;         //
-        public AnyType element;     // the element
-        public boolean isActive;    // false if marked deleted
-
+        public String  key;       // key
+        public AnyType element;   // the element
+        public boolean isActive;  // false if marked deleted
 
 //        public HashEntry( AnyType e )
 //        {
 //            this( e, true );
 //        }
 
-        public HashEntry( AnyType e, Integer k, boolean i )
+        public HashEntry( String key, AnyType e, boolean i )
         {
+            key = key;
             element  = e;
             isActive = i;
-            key      = k;
         }
-
-        public Integer getKey(){return this.key;}
-
-
-
     }
 
     private static final int DEFAULT_TABLE_SIZE = 101;
@@ -288,5 +280,5 @@ public class QuadraticProbingHashTable<AnyType>
     }
 
 
-
 }
+
