@@ -43,7 +43,7 @@ public class QuadraticProbingHashTable<AnyType>
     public boolean insert(String word, AnyType wordInfo )
     {
         // Insert x as active
-        int currentPos = findPos( wordInfo );
+        int currentPos = findPos( word );
         if( isActive( currentPos ) )
             return false;
 
@@ -92,7 +92,7 @@ public class QuadraticProbingHashTable<AnyType>
      * @param x the item to search for.
      * @return the position where the search terminates.
      */
-    private int findPos( AnyType x )
+    public int findPos( String x )
     {
         int offset = 1;
         int currentPos = myhash( x );
@@ -114,7 +114,7 @@ public class QuadraticProbingHashTable<AnyType>
      * @param x the item to remove.
      * @return true if item removed
      */
-    public boolean remove( AnyType x )
+    public boolean remove( String x )
     {
         int currentPos = findPos( x );
         if( isActive( currentPos ) )
@@ -150,7 +150,7 @@ public class QuadraticProbingHashTable<AnyType>
      * @param x the item to search for.
      * @return true if item is found
      */
-    public boolean contains( AnyType x )
+    public boolean contains( String x )
     {
         int currentPos = findPos( x );
         return isActive( currentPos );
@@ -161,7 +161,7 @@ public class QuadraticProbingHashTable<AnyType>
      * @param x the item to search for.
      * @return the matching item.
      */
-    public AnyType find( AnyType x )
+    public AnyType find( String x )
     {
         int currentPos = findPos( x );
         if (!isActive( currentPos )) {
@@ -197,7 +197,7 @@ public class QuadraticProbingHashTable<AnyType>
             array[ i ] = null;
     }
 
-    private int myhash( AnyType x )
+    private int myhash( String x )
     {
         int hashVal = x.hashCode( );
 
@@ -208,7 +208,7 @@ public class QuadraticProbingHashTable<AnyType>
         return hashVal;
     }
 
-    private static class HashEntry<AnyType>
+    public static class HashEntry<AnyType>
     {
         public String  key;       // key
         public AnyType element;   // the element
@@ -224,6 +224,10 @@ public class QuadraticProbingHashTable<AnyType>
             key = key;
             element  = e;
             isActive = i;
+        }
+
+        public AnyType getElement() {
+            return element;
         }
     }
 
@@ -256,6 +260,10 @@ public class QuadraticProbingHashTable<AnyType>
             ;
 
         return n;
+    }
+
+    public HashEntry<AnyType>[] getArray() {
+        return array;
     }
 
     /**

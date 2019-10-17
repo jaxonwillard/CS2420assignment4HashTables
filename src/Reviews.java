@@ -40,7 +40,12 @@ public class Reviews {
                 ReviewInfo r = new ReviewInfo(score, words);
 
                 for (String word : Arrays.copyOfRange(words,1, words.length)){
-                    if (!H.contains())
+                    if (!H.contains(word)){
+                        H.insert(word, new WordInfo(word));
+                    }
+                    else{
+                        H.getArray()[0].element.update(score);
+                    }
                 }
 
                 System.out.println(r.toString());
@@ -64,7 +69,7 @@ public class Reviews {
 
             public String toString() {
                 StringBuilder sb = new StringBuilder();
-                sb.append("Review " + score+ " Length of Review " + (words.length -1) + " ");
+                sb.append("Review " + score + " Length of Review " + (words.length -1) + " ");
                 for (int i = 1; i < 11 & i < words.length; i++)
                     sb.append(words[i] + " ");
                 return sb.toString();
