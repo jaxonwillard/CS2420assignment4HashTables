@@ -15,7 +15,7 @@
  * Note that all "matching" is based on the equals method.
  * @author Mark Allen Weiss
  */
-public class QuadraticProbingHashTable<AnyType>
+public class QuadraticProbingHashTable<key, element>
 {
     /**
      * Construct the hash table.
@@ -38,16 +38,16 @@ public class QuadraticProbingHashTable<AnyType>
     /**
      * Insert into the hash table. If the item is
      * already present, do nothing.
-     * @param wordInfo the item to insert.
+     * @param key the item to insert.
      */
-    public boolean insert(String word, AnyType wordInfo )
+    public boolean insert(key key, element element)
     {
         // Insert x as active
-        int currentPos = findPos( word );
+        int currentPos = findPos( key );
         if( isActive( currentPos ) )
             return false;
 
-        array[ currentPos ] = new HashEntry<>(word, wordInfo, true );
+        array[ currentPos ] = new HashEntry<>( key, element, true );
         theSize++;
 
         // Rehash; see Section 5.5
@@ -74,7 +74,7 @@ public class QuadraticProbingHashTable<AnyType>
      */
     private void rehash( )
     {
-        HashEntry<AnyType> [ ] oldArray = array;
+        HashEntry<key, element> [ ] oldArray = array;
 
         // Create a new double-sized, empty table
         allocateArray( 2 * oldArray.length );
@@ -82,9 +82,9 @@ public class QuadraticProbingHashTable<AnyType>
         theSize = 0;
 
         // Copy table over
-        for( HashEntry<AnyType> entry : oldArray )
+        for( HashEntry<key, element> entry : oldArray )
             if( entry != null && entry.isActive )
-                insert(entry.key, entry.element );
+                insert( entry.key, entry.element );
     }
 
     /**
@@ -92,13 +92,13 @@ public class QuadraticProbingHashTable<AnyType>
      * @param x the item to search for.
      * @return the position where the search terminates.
      */
-    public int findPos( String x )
+    public int findPos( key x )
     {
         int offset = 1;
         int currentPos = myhash( x );
 
         while( array[ currentPos ] != null &&
-                !array[ currentPos ].element.equals( x ) )
+                !array[ currentPos ].key.equals( x ) )
         {
             currentPos += offset;  // Compute ith probe
             offset += 2;
@@ -114,7 +114,7 @@ public class QuadraticProbingHashTable<AnyType>
      * @param x the item to remove.
      * @return true if item removed
      */
-    public boolean remove( String x )
+    public boolean remove( key x )
     {
         int currentPos = findPos( x );
         if( isActive( currentPos ) )
@@ -150,7 +150,7 @@ public class QuadraticProbingHashTable<AnyType>
      * @param x the item to search for.
      * @return true if item is found
      */
-    public boolean contains( String x )
+    public boolean contains( key x )
     {
         int currentPos = findPos( x );
         return isActive( currentPos );
@@ -161,7 +161,7 @@ public class QuadraticProbingHashTable<AnyType>
      * @param x the item to search for.
      * @return the matching item.
      */
-    public AnyType find( String x )
+    public element find( key x )
     {
         int currentPos = findPos( x );
         if (!isActive( currentPos )) {
@@ -182,6 +182,10 @@ public class QuadraticProbingHashTable<AnyType>
         return array[ currentPos ] != null && array[ currentPos ].isActive;
     }
 
+    public HashEntry[] getArray(){return array;}
+
+
+
     /**
      * Make the hash table logically empty.
      */
@@ -197,7 +201,7 @@ public class QuadraticProbingHashTable<AnyType>
             array[ i ] = null;
     }
 
-    private int myhash( String x )
+    private int myhash( key x )
     {
         int hashVal = x.hashCode( );
 
@@ -208,32 +212,28 @@ public class QuadraticProbingHashTable<AnyType>
         return hashVal;
     }
 
-    public static class HashEntry<AnyType>
+    private static class HashEntry<key, element>
     {
-        public String  key;       // key
-        public AnyType element;   // the element
-        public boolean isActive;  // false if marked deleted
+        public key      key;       // the key
+        public element  element;   // the element
+        public boolean  isActive;  // false if marked deleted
 
-//        public HashEntry( AnyType e )
+//        public HashEntry( element e )
 //        {
 //            this( e, true );
 //        }
 
-        public HashEntry( String key, AnyType e, boolean i )
+        private HashEntry( key key, element element, boolean i )
         {
-            key = key;
-            element  = e;
+            this.key      = key;
+            this.element  = element;
             isActive = i;
-        }
-
-        public AnyType getElement() {
-            return element;
         }
     }
 
     private static final int DEFAULT_TABLE_SIZE = 101;
 
-    private HashEntry<AnyType> [ ] array; // The array of elements
+    private HashEntry<key, element> [ ] array; // The array of elements
     private int occupiedCt;                 // The number of occupied cells
     private int theSize;                  // Current size
 
@@ -262,10 +262,6 @@ public class QuadraticProbingHashTable<AnyType>
         return n;
     }
 
-    public HashEntry<AnyType>[] getArray() {
-        return array;
-    }
-
     /**
      * Internal method to test if a number is prime.
      * Not an efficient algorithm.
@@ -287,6 +283,61 @@ public class QuadraticProbingHashTable<AnyType>
         return true;
     }
 
+
+    // Simple main
+    public static void main( String [ ] args )
+    {
+        QuadraticProbingHashTable<String, String> H = new QuadraticProbingHashTable<>( );
+        H.insert("good", "good");
+        H.insert("doog", "good");
+        System.out.println(H.toString(90));
+        System.out.println(H.find("good"));
+        System.out.println(H.findPos("good"));
+
+        System.out.println("=======================================================================================");
+        QuadraticProbingHashTable<String, Integer> I = new QuadraticProbingHashTable<>();
+        I.insert("good", 12);
+        System.out.println(I.toString(90));
+        System.out.println(I.findPos("good"));
+
+
+
+
+//
+//
+//        long startTime = System.currentTimeMillis( );
+//
+//        final int NUMS = 2000000;
+//        final int GAP  =   37;
+//
+//        System.out.println( "Checking... (no more output means success)" );
+//
+//
+//        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
+//            H.insert( ""+i );
+//        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
+//            if( H.insert( ""+i ) )
+//                System.out.println( "OOPS!!! " + i );
+//        for( int i = 1; i < NUMS; i+= 2 )
+//            H.remove( ""+i );
+//
+//        for( int i = 2; i < NUMS; i+=2 )
+//            if( !H.contains( ""+i ) )
+//                System.out.println( "Find fails " + i );
+//
+//        for( int i = 1; i < NUMS; i+=2 )
+//        {
+//            if( H.contains( ""+i ) )
+//                System.out.println( "OOPS!!! " +  i  );
+//        }
+//
+//        long endTime = System.currentTimeMillis( );
+//
+//        System.out.println( "Elapsed time: " + (endTime - startTime) );
+//        System.out.println( "H size is: " + H.size( ) );
+//        System.out.println( "Array size is: " + H.capacity( ) );
+//        QuadraticProbingHashTable<String> H = new QuadraticProbingHashTable();
+    }
 
 }
 
