@@ -15,20 +15,22 @@ public class Main {
             Scanner input = new Scanner(System.in);
             String userReview = input.nextLine();
             double userReviewTotalScore = 0;
+            double userReviewWordsCount = 0;
             String[] words = userReview.split("\\s+");
             for (String word : words) {
                 if (r1.getH().contains(word)) {
                     if (r1.getWordInfoReviewOccurences(word) / r1.getTotalReviews() < .1){
                         userReviewTotalScore += r1.getWordInfoAvg(word);
+                        userReviewWordsCount++;
 
                     }
                 }
             }
             System.out.println("REVIEW: " + userReview);
-            double userReviewAvgScore = userReviewTotalScore / words.length;
+            double userReviewAvgScore = userReviewTotalScore / userReviewWordsCount;
             System.out.printf("The review has an average value of %.2f \n", (userReviewAvgScore));
             if (userReviewAvgScore <= 1.75) System.out.println("Negative");
-            if (userReviewAvgScore < 1.75 && userReviewAvgScore > 2.25) System.out.println("Neutral");
+            if (userReviewAvgScore > 1.75 && userReviewAvgScore < 2.25) System.out.println("Neutral");
             if (userReviewAvgScore >= 2.25) System.out.println("Positive");
 
 

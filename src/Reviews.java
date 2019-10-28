@@ -62,6 +62,7 @@ public class Reviews {
         return totalReviews;
     }
 
+    /** insert each word in review into hashtable and update amount of review occurences for each unique word**/
     private void insertReviewInHashTable(ReviewInfo r){
 
         for (int i=1; i < r.words.length; i++){

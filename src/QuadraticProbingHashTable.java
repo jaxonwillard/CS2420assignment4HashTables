@@ -284,60 +284,6 @@ public class QuadraticProbingHashTable<key, element>
     }
 
 
-    // Simple main
-    public static void main( String [ ] args )
-    {
-        QuadraticProbingHashTable<String, String> H = new QuadraticProbingHashTable<>( );
-        H.insert("good", "good");
-        H.insert("doog", "good");
-        System.out.println(H.toString(90));
-        System.out.println(H.find("good"));
-        System.out.println(H.findPos("good"));
-
-        System.out.println("=======================================================================================");
-        QuadraticProbingHashTable<String, Integer> I = new QuadraticProbingHashTable<>();
-        I.insert("good", 12);
-        System.out.println(I.toString(90));
-        System.out.println(I.findPos("good"));
-
-
-
-
-//
-//
-//        long startTime = System.currentTimeMillis( );
-//
-//        final int NUMS = 2000000;
-//        final int GAP  =   37;
-//
-//        System.out.println( "Checking... (no more output means success)" );
-//
-//
-//        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
-//            H.insert( ""+i );
-//        for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
-//            if( H.insert( ""+i ) )
-//                System.out.println( "OOPS!!! " + i );
-//        for( int i = 1; i < NUMS; i+= 2 )
-//            H.remove( ""+i );
-//
-//        for( int i = 2; i < NUMS; i+=2 )
-//            if( !H.contains( ""+i ) )
-//                System.out.println( "Find fails " + i );
-//
-//        for( int i = 1; i < NUMS; i+=2 )
-//        {
-//            if( H.contains( ""+i ) )
-//                System.out.println( "OOPS!!! " +  i  );
-//        }
-//
-//        long endTime = System.currentTimeMillis( );
-//
-//        System.out.println( "Elapsed time: " + (endTime - startTime) );
-//        System.out.println( "H size is: " + H.size( ) );
-//        System.out.println( "Array size is: " + H.capacity( ) );
-//        QuadraticProbingHashTable<String> H = new QuadraticProbingHashTable();
-    }
 
 }
 
